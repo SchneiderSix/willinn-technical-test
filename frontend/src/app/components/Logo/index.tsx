@@ -35,7 +35,7 @@ export default function Logo() {
       </g>
       <defs>
       <linearGradient id="paint0_linear_1_1412" x1="-0.000283875" y1="5.20967" x2="18.7767" y2="5.20967" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#F92892"/>
+      <stop stopColor="#F92892"/>
       <stop offset="0.01" stopColor="#F72793"/>
       <stop offset="0.47" stopColor="#CD12C5"/>
       <stop offset="0.81" stopColor="#B304E5"/>

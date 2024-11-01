@@ -7,13 +7,13 @@ export default function LoginForm() {
             bg-white shadow-[0px_4px_10px_rgba(138,142,148,0.05)] 
             rounded-lg">
         <h1 className="w-[150px] h-[36px] 
-               font-poppins font-medium text-[24px] leading-[36px] 
+                font-medium text-[24px] leading-[36px] 
                text-[#282828]">
           Inicia sesión
         </h1>
         <form className="flex flex-col items-start gap-6 w-full">
           <div className="w-full space-y-2">
-            <label className="font-poppins font-medium text-[14px] leading-[22px] text-[#282828]">
+            <label className=" font-medium  text-[#282828]">
               E-mail
             </label>
             <div className="box-border flex items-center p-4 gap-2 
@@ -23,12 +23,12 @@ export default function LoginForm() {
               <input 
                 type="email" 
                 placeholder="Introduce tu email" 
-                className="flex-grow border-none outline-none focus:outline-none focus:border-transparent"
+                className=" font-medium flex-grow border-none outline-none focus:outline-none focus:border-transparent"
               />
             </div>
           </div>
           <div className="w-full space-y-2">
-            <label className="font-poppins font-medium text-[14px] leading-[22px] text-[#282828]">
+            <label className="font-medium text-[#282828]">
               Contraseña
             </label>
             <div className="box-border flex items-center p-4 gap-2 
@@ -38,7 +38,7 @@ export default function LoginForm() {
               <input 
                 type="password" 
                 placeholder="Introduce tu contraseña" 
-                className="flex-grow border-none outline-none focus:outline-none focus:border-transparent"
+                className=" font-medium flex-grow border-none outline-none focus:outline-none focus:border-transparent"
               />
             </div>
           </div>
