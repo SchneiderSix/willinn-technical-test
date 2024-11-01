@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Get connection string from env vars
 //"DefaultConnection": "Server=sql-server;Initial Catalog=UserDb;User ID=SA;Password=Secret123456!;TrustServerCertificate=true;"
 
+var front = builder.Configuration["front"] ?? "frontend";
 var server = builder.Configuration["server"] ?? "sql-server";
 var db = builder.Configuration["db"] ?? "UserDb";
 var user = builder.Configuration["user"] ?? "SA";
@@ -63,6 +64,18 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
+// Handle CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "frontApp", configurePolicy: policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:3000")//AllowAnyOrigin()
+            .AllowAnyHeader()//.AllowAnyHeader()
+            .AllowAnyMethod()//.AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Handle migrations
@@ -78,7 +91,9 @@ app.UseSwagger();
     app.UseSwaggerUI();
 //}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+
+app.UseCors("frontApp");
 
 app.UseAuthorization();
 

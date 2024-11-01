@@ -1,4 +1,32 @@
+import { FormEvent } from "react";
+
 export default function LoginForm() {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    try {
+      const response = await fetch('http://localhost:8090/api/users', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log(response);
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data);
+  
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col items-center p-10 gap-7 
@@ -11,7 +39,7 @@ export default function LoginForm() {
                text-[#282828]">
           Inicia sesión
         </h1>
-        <form className="flex flex-col items-start gap-6 w-full">
+        <form onSubmit={handleSubmit} className="flex flex-col items-start gap-6 w-full">
           <div className="w-full space-y-2">
             <label className=" font-medium  text-[#282828]">
               E-mail
@@ -43,7 +71,7 @@ export default function LoginForm() {
             </div>
           </div>
           <div className="flex flex-col items-end w-full gap-3">
-            <button type="button" className="flex justify-center items-center 
+            <button type="submit" className="flex justify-center items-center 
                px-[49px] py-[14px] gap-2 
                w-full h-[52px] 
                bg-[#F72793] text-white rounded-[6px]
