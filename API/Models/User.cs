@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API.Models
 {
     public class User
     {
-
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} value cannot exceed {1} characters.")]
         public string ID { get; set; } = null!;
 
         [Required]
@@ -13,11 +15,12 @@ namespace API.Models
 
         [Required]
         [EmailAddress(ErrorMessage = "{0} must be a valid email address.")]
+        [StringLength(100, ErrorMessage = "{0} value cannot exceed {1} characters.")]
         public string Email { get; set; } = null!;
 
-        [Required]
-        [RegularExpression(@"^(?=.*[!@#$%^&*()_\-+={}[\]|\\:;\""'<>,.?/~`])[A-Za-z\d!@#$%^&*()_\-+={}[\]|\\:;\""'<>,.?/~`]{3,30}$",
-        ErrorMessage = "{0} must be {1}-{2} characters long and contain at least one special character.")]
+        [RegularExpression(@"^^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)[\S]{8,}$",
+        ErrorMessage = "{0} must contain at least one special character, one number, one upper case and one lower case.")]
+        [StringLength(100, ErrorMessage = "{0} value cannot exceed {1} characters.")]
         public string Password { get; set; } = null!;
         public bool IsActive { get; set; } = true;
     }

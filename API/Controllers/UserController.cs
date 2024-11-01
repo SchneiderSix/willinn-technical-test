@@ -21,7 +21,10 @@ namespace API.Controllers
         [HttpGet("users")]
         public async Task<ActionResult<List<User>>> GetUsers()
         {
-            var users = await _context.Users.Where(i => i.IsActive).ToListAsync();
+            var users = await _context.Users
+                .Where(i => i.IsActive)
+                .Select(i => new { ID = i.ID, Name = i.Name, Email = i.Email, IsActive = i.IsActive })
+                .ToListAsync();
 
             return Ok(users);
         }
@@ -33,7 +36,7 @@ namespace API.Controllers
 
             if (user == null) return NotFound("User not found.");
 
-            return Ok(user);
+            return Ok(new { user.Email, user.Name, user.ID });
         }
 
         [HttpPost("users/login")]
@@ -43,12 +46,14 @@ namespace API.Controllers
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginUser.Password, user.Password)) return BadRequest("Invalid credentials.");
 
-            return Ok(user.Name);
+            return Ok(new { user.Email, user.Name, user.ID });
         }
 
         [HttpPost("users")]
         public async Task<ActionResult<User>> CreateUser(User newUser)
         {
+            if (string.IsNullOrEmpty(newUser.Password)) return BadRequest("Invalid credentials.");
+
             var existingUser = await _context.Users.FirstOrDefaultAsync(i => i.Email == newUser.Email);
 
             if (existingUser != null) return Conflict("User already exists.");
@@ -57,10 +62,13 @@ namespace API.Controllers
 
             newUser.ID = Guid.NewGuid().ToString();
 
+            newUser.IsActive = true;
+
+
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUser), new { id = newUser.ID }, newUser);
+            return Ok(new { newUser.Email, newUser.Name, newUser.ID});
         }
 
         [HttpPut("users{id}")]
