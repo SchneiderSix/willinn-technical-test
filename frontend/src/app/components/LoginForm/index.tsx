@@ -50,7 +50,7 @@ export default function LoginForm() {
                hover:bg-[#d31e7d] transition-colors duration-200">
               Ingresar
             </button>
-            <button type="button" className="text-[#282828] text-sm truncate">
+            <button type="button" className="text-[#263A66] text-sm truncate">
               Olvidaste la contraseña?
             </button>
           </div>
