@@ -18,9 +18,8 @@ namespace API.Models
         public string Email { get; set; } = null!;
 
         [Required]
-        [StringLength(30, ErrorMessage = "{0} value cannot exceed {1} characters.")]
-        [RegularExpression(@"^(?=.*[!@#$%^&*()_\-+={}[\]|\\:;\""'<>,.?/~`])[A-Za-z\d!@#$%^&*()_\-+={}[\]|\\:;\""'<>,.?/~`]{10,30}$",
-        ErrorMessage = "{0} must be {1}-{2} characters long and contain at least one special character.")]
+        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$",
+    ErrorMessage = "{0} must be at least {1} characters long and contain both letters and numbers.")]
         public string Password { get; set; } = null!;
         public bool IsActive { get; set; } = true;
     }
