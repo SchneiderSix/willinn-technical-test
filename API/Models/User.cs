@@ -4,9 +4,7 @@ namespace API.Models
 {
     public class User
     {
-        [Required]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$",
-    ErrorMessage = "{0} must be at least {1} characters long and contain both letters and numbers.")]
+
         public string ID { get; set; } = null!;
 
         [Required]
@@ -18,8 +16,8 @@ namespace API.Models
         public string Email { get; set; } = null!;
 
         [Required]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$",
-    ErrorMessage = "{0} must be at least {1} characters long and contain both letters and numbers.")]
+        [RegularExpression(@"^(?=.*[!@#$%^&*()_\-+={}[\]|\\:;\""'<>,.?/~`])[A-Za-z\d!@#$%^&*()_\-+={}[\]|\\:;\""'<>,.?/~`]{3,30}$",
+        ErrorMessage = "{0} must be {1}-{2} characters long and contain at least one special character.")]
         public string Password { get; set; } = null!;
         public bool IsActive { get; set; } = true;
     }
