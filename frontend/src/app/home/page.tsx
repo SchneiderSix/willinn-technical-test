@@ -5,6 +5,7 @@ import { User } from "@/types";
 import dynamic from "next/dynamic"
 
 const ComponentSidebar = dynamic (() => import('@/app/components/Sidebar'))
+const ComponentUserTable = dynamic(() => import('@/app/components/UserTable'))
 
 export default function HomePage() {
   const router = useRouter();
@@ -36,6 +37,17 @@ export default function HomePage() {
       <p className="absolute w-[120px] h-[34px] left-[272px] top-[99px] font-inter font-semibold text-[28px] leading-[34px] text-[#0C1646]">
         {activeItem}
       </p>
+
+      {activeItem === 'Inicio' ? (
+        <>
+          <p className="absolute w-[120px] h-[34px] left-[292px] top-[160px] font-inter font-semibold text-[28px] leading-[34px]"
+          >🍃</p>
+        </>
+      ) : (
+        <>
+          <ComponentUserTable></ComponentUserTable>
+        </>
+      ) }
     </>
   );
 }
