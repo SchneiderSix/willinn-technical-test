@@ -1,6 +1,7 @@
 'use client'
 import { User } from "@/types";
 import { useEffect, useState } from "react";
+import { useDebounce } from 'use-debounce';
 import dynamic from "next/dynamic"
 
 const ComponentSearchBar = dynamic (() => import('@/app/components/SearchBar'))
@@ -8,6 +9,7 @@ const ComponentSearchBar = dynamic (() => import('@/app/components/SearchBar'))
 export default function UserTable() {
   const [users, setUsers] = useState<User[] | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
+  const [debouncedSearchValue] = useDebounce(searchValue, 1000);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -39,7 +41,7 @@ export default function UserTable() {
 
   return (
     <>
-      {users?.filter((user) => user.isActive && (user.email.toLowerCase().includes(searchValue.toLowerCase()) || user.name.toLowerCase().includes(searchValue.toLowerCase())))
+      {users?.filter((user) => user.isActive && (user.email.toLowerCase().includes(debouncedSearchValue.toLowerCase()) || user.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())))
       .map((user) => (
         <li key={user.id}>
         <p>Name: {user.name}</p>
