@@ -114,8 +114,8 @@ export default function LoginForm() {
               className="cursor-pointer"
               onClick={() => setShowPass(!showPass)}
               >
-              <path d="M1 8C1 8 4.45455 1 10.5 1C16.5455 1 20 8 20 8C20 8 16.5455 15 10.5 15C4.45455 15 1 8 1 8Z" stroke="#949CA9" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M10.5 11C12.074 11 13.35 9.65685 13.35 8C13.35 6.34315 12.074 5 10.5 5C8.92599 5 7.65 6.34315 7.65 8C7.65 9.65685 8.92599 11 10.5 11Z" stroke="#949CA9" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M1 8C1 8 4.45455 1 10.5 1C16.5455 1 20 8 20 8C20 8 16.5455 15 10.5 15C4.45455 15 1 8 1 8Z" stroke="#949CA9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10.5 11C12.074 11 13.35 9.65685 13.35 8C13.35 6.34315 12.074 5 10.5 5C8.92599 5 7.65 6.34315 7.65 8C7.65 9.65685 8.92599 11 10.5 11Z" stroke="#949CA9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
 
             </div>
