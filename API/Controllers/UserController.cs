@@ -54,7 +54,7 @@ namespace API.Controllers
         {
             if (string.IsNullOrEmpty(newUser.Password)) return BadRequest("Invalid credentials.");
 
-            var existingUser = await _context.Users.FirstOrDefaultAsync(i => i.Email == newUser.Email);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(i => i.Email == newUser.Email && i.IsActive != false );
 
             if (existingUser != null) return Conflict("User already exists.");
 
