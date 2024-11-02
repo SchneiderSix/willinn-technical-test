@@ -42,7 +42,7 @@ namespace API.Controllers
         [HttpPost("users/login")]
         public async Task<ActionResult<User>> Login(User loginUser)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(i => i.Email == loginUser.Email);
+            var user = await _context.Users.Where(i => i.Email == loginUser.Email && i.IsActive).FirstOrDefaultAsync();
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginUser.Password, user.Password)) return BadRequest("Invalid credentials.");
 
