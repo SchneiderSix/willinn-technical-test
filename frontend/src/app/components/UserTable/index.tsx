@@ -48,11 +48,20 @@ export default function UserTable() {
         </li>
       ))}
       <div className="absolute w-[662px] h-[630px] left-[272px] top-[185px] bg-white rounded-2xl">
-        <div className="p-5 font-inter font-medium text-[16px] leading-[19px] text-[#343C6A] border-b-2 border-[#E6EFF5]">
-          <p>
+        <div className="flex justify-between items-center px-5 py-3 font-inter text-[16px] leading-[19px] text-[#343C6A] border-b-2 border-[#E6EFF5]">
+          <p className="font-medium">
             Usuarios
           </p>
           <ComponentSearchBar onSearch={handleSearch} />
+        </div>
+        <div className="font-medium flex items-center px-5 py-5 font-inter text-[16px] leading-[19px] text-[#343C6A] border-b-2 border-[#E6EFF5]">
+          <p className="flex-1 text-left">
+            Nombre
+          </p>
+          <p className="text-center w-full">
+            Correo
+          </p>
+          <div className="flex-1"></div>
         </div>
       </div>
     </>
