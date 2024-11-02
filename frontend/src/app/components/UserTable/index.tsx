@@ -6,6 +6,7 @@ import dynamic from "next/dynamic"
 
 const ComponentSearchBar = dynamic (() => import('@/app/components/SearchBar'))
 const ComponentTableRow = dynamic(() => import('@/app/components/TableRow'))
+const ComponentPagination = dynamic(() => import('@/app/components/Pagination'))
 
 export default function UserTable() {
   const [users, setUsers] = useState<User[] | null>(null);
@@ -50,6 +51,10 @@ export default function UserTable() {
     if (typeof user == 'string') setUsers((prevUsers) => prevUsers!.filter((i) => i.id !== user));
   };
 
+  const handleCurrentPage = (page: number) => {
+    alert(page)
+  }
+
   return (
     <>
       <div className="absolute w-[662px] h-[630px] left-[272px] top-[185px] bg-white rounded-2xl">
@@ -80,6 +85,9 @@ export default function UserTable() {
             <ComponentTableRow key={user.id} user={user} reRender={handleReRender}/>
           ))
         )}
+      </div>
+      <div className="absolute w-[333px] h-[40px] left-[599px] top-[862px]">
+        <ComponentPagination pages={3} currentPage={handleCurrentPage}></ComponentPagination>
       </div>
     </>
   )
