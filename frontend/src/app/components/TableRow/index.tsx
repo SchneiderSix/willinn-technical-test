@@ -31,7 +31,13 @@ const TableRow: React.FC<TableRowProprs> = ({ user, reRender }) => {
       if (response.status == 204) {
         alert(`Usuario a nombre de ${name} fue borrado`);
       } else {
-        console.error('Failed to delete users:', response.status);
+        const contentType = response.headers.get("content-type");
+        const errorMessage = contentType && contentType.includes("application/json")
+          ? (await response.json()).message
+          : await response.text();
+    
+        alert(errorMessage);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch(e) {
       console.error('Error during fetch:',e)
@@ -50,8 +56,9 @@ const TableRow: React.FC<TableRowProprs> = ({ user, reRender }) => {
 
       if (response.status == 204) {
         alert(`Usuario a nombre de ${user.name} fue editado`);
+        reRender(user);
       } else {
-        console.error('Failed to delete users:', response.status);
+        alert('Email o nombre invalidos');
       }
     } catch(e) {
       console.error('Error during fetch:',e)
@@ -118,7 +125,6 @@ const TableRow: React.FC<TableRowProprs> = ({ user, reRender }) => {
       }
       editUser(selectedUser);
       setEdit(!edit);
-      reRender(selectedUser);
     }
   }
 
