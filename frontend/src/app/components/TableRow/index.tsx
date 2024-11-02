@@ -1,16 +1,19 @@
 'use client'
 import { User } from "@/types"
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from 'next/navigation';
 
 interface TableRowProprs {
   user: User;
-  onDelete: (id: string) => void;
+  reRender: (user: string | User ) => void;
 }
 
-const TableRow: React.FC<TableRowProprs> = ({ user, onDelete }) => {
+const TableRow: React.FC<TableRowProprs> = ({ user, reRender }) => {
 
   const [more, setMore] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter()
 
@@ -35,7 +38,28 @@ const TableRow: React.FC<TableRowProprs> = ({ user, onDelete }) => {
     }
   }
 
+  const editUser = async(user : User) => {
+    try {
+      const response = await fetch(`http://localhost:8090/api/users/${user.id}`,{
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user)
+      });
+
+      if (response.status == 204) {
+        alert(`Usuario a nombre de ${user.name} fue editado`);
+      } else {
+        console.error('Failed to delete users:', response.status);
+      }
+    } catch(e) {
+      console.error('Error during fetch:',e)
+    }
+  }
+
   const handleDelete = async () => {
+
     if(currentUser.id != user.id) {
       const confirmDelete = window.confirm(`Estas seguro de que quieres borrar al usuario ${user.email}?`);
 
@@ -43,7 +67,7 @@ const TableRow: React.FC<TableRowProprs> = ({ user, onDelete }) => {
         // Delete user
         await deleteUser(user.id, user.name);
         // Re render
-        onDelete(user.id);
+        reRender(user.id);
       }
     } else {
       const confirmDelete = window.confirm(`Estas seguro de que quieres borrar tu usuario?`);
@@ -58,15 +82,71 @@ const TableRow: React.FC<TableRowProprs> = ({ user, onDelete }) => {
     }
   }
 
+  const handleEdit = () => {
+    if (edit == false) {
+      // Show name and email inputs
+      setEdit(!edit);
+      return;
+    } else {
+      // Work as a submit button
+
+      if (
+        nameRef.current?.value == null || 
+        emailRef.current?.value == null ||
+        nameRef.current.value.length == 0 ||
+        emailRef.current.value.length == 0
+      ) {
+        alert('Credenciales invalidas');
+        return;
+      } else if (
+        nameRef.current.value.length > 30
+      ) {
+        alert('Nombre demasiado largo, 30 caracteres como maximo');
+        return;
+      } else if (
+        emailRef.current.value.length > 100
+      ) {
+        alert('E-mail demasiado largo, 100 caracteres como maximo');
+        return;
+      }
+      
+      const selectedUser = {
+        id: user.id,
+        password: '',
+        name: nameRef.current?.value,
+        email: emailRef.current?.value
+      }
+      editUser(selectedUser);
+      setEdit(!edit);
+      reRender(selectedUser);
+    }
+  }
+
   return (
     <div className="flex flex-row px-5">
       <div className="py-3 border-b-2 border-[#E6EFF5] flex flex-row w-full">
-        <p className="w-1/3 text-left overflow-hidden text-ellipsis whitespace-nowrap">
-          {user.name}
-        </p>
-        <p className="w-1/3 text-center overflow-hidden text-ellipsis whitespace-nowrap">
-          {user.email}
-        </p>
+        {edit? (
+          <>
+            <input ref={nameRef} title="name" type="text" defaultValue={user.name} className="p-1 m-2 rounded-md bg-[#e0e2e6] w-1/3 text-left overflow-hidden text-ellipsis whitespace-nowrap"/>
+          </>
+        ) : (
+          <>
+            <p className="w-1/3 text-left overflow-hidden text-ellipsis whitespace-nowrap">
+              {user.name}
+            </p>
+          </>
+        )}
+        {edit? (
+          <>
+            <input ref={emailRef} title="email" type="text" defaultValue={user.email} className="p-1 m-2 rounded-md bg-[#e0e2e6] w-1/3 text-left overflow-hidden text-ellipsis whitespace-nowrap"/>
+          </>
+        ) : (
+          <>
+            <p className="w-1/3 text-left overflow-hidden text-ellipsis whitespace-nowrap">
+              {user.email}
+            </p>
+          </>
+        )}
         <div className="w-1/3 flex justify-end">
           {!more ? (
             <>
@@ -93,10 +173,11 @@ const TableRow: React.FC<TableRowProprs> = ({ user, onDelete }) => {
                   fill={`${currentUser.id != user.id ? '#F72793' : '#0C1646'}`}/>
                 </svg>
                 <svg 
+                onClick={handleEdit}
                 className="cursor-pointer"
                 width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.621 3.25 16.863 3.15C17.105 3.05 17.359 3 17.625 3C17.891 3 18.1493 3.05 18.4 3.15C18.6507 3.25 18.8673 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.771 5.4 20.863 5.65C20.955 5.9 21.0007 6.15 21 6.4C21 6.66667 20.9543 6.921 20.863 7.163C20.7717 7.405 20.6257 7.62567 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" 
-                  fill="#0C1646"/>
+                  fill={`${edit ? '#28A745' : '#0C1646'}`}/>
                 </svg>
               </div>
             </>

@@ -43,8 +43,11 @@ export default function UserTable() {
     setSearchValue(value);
   }
 
-  const handleDeleteUser = (id: string) => {
-    setUsers((prevUsers) => prevUsers!.filter((user) => user.id !== id));
+  const handleReRender = (user: string | User) => {
+    if (typeof user == 'object') {
+      setUsers((prevUsers) => prevUsers!.map((i) => i.id === user.id ? { ...i, ...user } : i));
+    }
+    if (typeof user == 'string') setUsers((prevUsers) => prevUsers!.filter((i) => i.id !== user));
   };
 
   return (
@@ -74,7 +77,7 @@ export default function UserTable() {
           (user.email.toLowerCase().includes(debouncedSearchValue.toLowerCase()) || 
           user.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())))
           .map((user) => (
-            <ComponentTableRow key={user.id} user={user} onDelete={handleDeleteUser}/>
+            <ComponentTableRow key={user.id} user={user} reRender={handleReRender}/>
           ))
         )}
       </div>

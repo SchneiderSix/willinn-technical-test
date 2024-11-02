@@ -21,16 +21,16 @@ export default function LoginForm() {
     }
 
     if (user.email == null || user.password == null || user.email.length == 0 || user.password.length == 0) {
-      alert('Invalid credentials.');
+      alert('Credenciales invalidas');
       return;
     } else if (user.email.length > 100) {
-      alert('E-mail too long, 100 max characters.');
+      alert('E-mail demasiado largo, 100 caracteres como maximo');
       return;
     } else if (user.password.length > 100) {
-      alert('Password too long, 100 max characters.');
+      alert('Contraseña demasiada larga, 100 caracteres como maximo');
       return;
     } else if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)[\S]{8,}$/.test(user.password)) {
-      alert('Password must contain at least one special character, one number, one upper case and one lower case.');
+      alert('Contraseña debe contener al menos un caracter espacial, un numero, una letra en minuscula y otra letra en mayuscula');
       return;
     }
 
@@ -63,7 +63,7 @@ export default function LoginForm() {
       router.push('/home');
   
     } catch (error) {
-      //console.error('Error fetching users:', error);
+      console.error('Error fetching users:', error);
     }
   }
 
