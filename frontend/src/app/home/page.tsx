@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { User } from "@/types";
+import dynamic from "next/dynamic"
+
+const ComponentSidebar = dynamic (() => import('@/app/components/Sidebar'))
 
 export default function HomePage() {
   const router = useRouter();
@@ -20,11 +23,10 @@ export default function HomePage() {
 
   return (
     <>
-      {storedSession ? (
-        <h1>Nice, {storedSession.email}</h1>
-      ) : (
-        <h1>Loading...</h1>
-      )}
+      <div
+      className="absolute w-[227px] h-[972px] left-0 top-0 bg-white">
+        <ComponentSidebar></ComponentSidebar>
+      </div>
     </>
   );
 }
