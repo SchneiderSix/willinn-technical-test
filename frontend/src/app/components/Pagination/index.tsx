@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface PaginationProps {
   pages: number,
+  page: number,
   currentPage: (value: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({pages, currentPage}) => {
+const Pagination: React.FC<PaginationProps> = ({pages, page, currentPage}) => {
 
-  const [current, setCurrent] = useState<number>(1)
+  const [current, setCurrent] = useState<number>(page)
+
+  useEffect(() => {
+    setCurrent(page);
+  }, [page]);
 
   return (
     <>

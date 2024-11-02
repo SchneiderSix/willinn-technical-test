@@ -44,6 +44,7 @@ export default function UserTable() {
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
+    setCurrentPage(1);
   }
 
   const handleReRender = (user: string | User) => {
@@ -102,7 +103,7 @@ export default function UserTable() {
         )}
       </div>
       <div className="absolute w-[333px] h-[40px] left-[599px] top-[862px]">
-        <ComponentPagination pages={groupedUsers.length} currentPage={handleCurrentPage}></ComponentPagination>
+        <ComponentPagination pages={groupedUsers.length} page={currentPage} currentPage={handleCurrentPage}></ComponentPagination>
       </div>
     </>
   )
