@@ -5,11 +5,13 @@ import { useDebounce } from 'use-debounce';
 import dynamic from "next/dynamic"
 
 const ComponentSearchBar = dynamic (() => import('@/app/components/SearchBar'))
+const ComponentTableRow = dynamic(() => import('@/app/components/TableRow'))
 
 export default function UserTable() {
   const [users, setUsers] = useState<User[] | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [debouncedSearchValue] = useDebounce(searchValue, 1000);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,6 +31,8 @@ export default function UserTable() {
         }
       } catch (error) {
         console.error('Error during fetch:', error);
+      } finally {
+        setLoading(!loading);
       }
     };
 
@@ -39,14 +43,12 @@ export default function UserTable() {
     setSearchValue(value);
   }
 
+  const handleDeleteUser = (id: string) => {
+    setUsers((prevUsers) => prevUsers!.filter((user) => user.id !== id));
+  };
+
   return (
     <>
-      {users?.filter((user) => user.isActive && (user.email.toLowerCase().includes(debouncedSearchValue.toLowerCase()) || user.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())))
-      .map((user) => (
-        <li key={user.id}>
-        <p>Name: {user.name}</p>
-        </li>
-      ))}
       <div className="absolute w-[662px] h-[630px] left-[272px] top-[185px] bg-white rounded-2xl">
         <div className="flex justify-between items-center px-5 py-3 font-inter text-[16px] leading-[19px] text-[#343C6A] border-b-2 border-[#E6EFF5]">
           <p className="font-medium">
@@ -54,15 +56,27 @@ export default function UserTable() {
           </p>
           <ComponentSearchBar onSearch={handleSearch} />
         </div>
-        <div className="font-medium flex items-center px-5 py-5 font-inter text-[16px] leading-[19px] text-[#343C6A] border-b-2 border-[#E6EFF5]">
-          <p className="flex-1 text-left">
+        <div className="font-medium flex px-5 py-5 font-inter text-[16px] leading-[19px] text-[#343C6A] border-b-2 border-[#E6EFF5]">
+          <p className="w-1/3 text-left">
             Nombre
           </p>
-          <p className="text-center w-full">
+          <p className="w-1/3 text-center">
             Correo
           </p>
-          <div className="flex-1"></div>
+          <div className="w-1/3 text-right"></div>
         </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-full">
+            <p>Loading...</p>
+          </div>
+          ) : (
+          users?.filter((user) => user.isActive && 
+          (user.email.toLowerCase().includes(debouncedSearchValue.toLowerCase()) || 
+          user.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())))
+          .map((user) => (
+            <ComponentTableRow key={user.id} user={user} onDelete={handleDeleteUser}/>
+          ))
+        )}
       </div>
     </>
   )
