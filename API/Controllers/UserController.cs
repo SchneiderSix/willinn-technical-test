@@ -71,7 +71,7 @@ namespace API.Controllers
             return Ok(new { newUser.Email, newUser.Name, newUser.ID});
         }
 
-        [HttpPut("users{id}")]
+        [HttpPut("users/{id}")]
         public async Task<ActionResult> UpdateUser(string id, User updatedUser)
         {
             var user = await _context.Users.FindAsync(id);
@@ -91,7 +91,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("users{id}")]
+        [HttpDelete("users/{id}")]
         public async Task<ActionResult> DeleteUser(string id)
         {
             var user = await _context.Users.Where(i => i.ID == id && i.IsActive).FirstOrDefaultAsync();
