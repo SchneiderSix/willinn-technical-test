@@ -9,6 +9,7 @@ const ComponentSidebar = dynamic (() => import('@/app/components/Sidebar'))
 export default function HomePage() {
   const router = useRouter();
   const [storedSession, setStoredSession] = useState<User | null>(null);
+  const [activeItem, setActiveItem] = useState<string>('inicio');
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,11 +22,15 @@ export default function HomePage() {
     }
   }, []);
 
+  const handleItemClick = (item: string) => {
+    setActiveItem(item);
+  };
+
   return (
     <>
       <div
       className="absolute w-[227px] h-[972px] left-0 top-0 bg-white">
-        <ComponentSidebar></ComponentSidebar>
+        <ComponentSidebar activeItem={activeItem} onItemClick={handleItemClick} ></ComponentSidebar>
       </div>
     </>
   );
