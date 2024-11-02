@@ -13,6 +13,8 @@ export default function UserTable() {
   const [searchValue, setSearchValue] = useState<string>('');
   const [debouncedSearchValue] = useDebounce(searchValue, 1000);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const usersPerPage = 9;
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -52,8 +54,24 @@ export default function UserTable() {
   };
 
   const handleCurrentPage = (page: number) => {
-    alert(page)
+    setCurrentPage(page);
   }
+
+  const filteredUsers = users?.filter((user) => 
+    user.isActive && 
+    (user.email.toLowerCase().includes(debouncedSearchValue.toLowerCase()) || 
+    user.name.toLowerCase().includes(debouncedSearchValue.toLowerCase()))
+  );
+
+  const groupedUsers = filteredUsers ? filteredUsers.reduce<User[][]>((acc, user, index) => {
+    if (index % usersPerPage === 0) {
+      acc.push([]);
+    }
+    acc[acc.length - 1].push(user);
+    return acc;
+  }, []) : [];
+
+  const currentUsers = groupedUsers[currentPage - 1] || [];
 
   return (
     <>
@@ -78,16 +96,13 @@ export default function UserTable() {
             <p>Loading...</p>
           </div>
           ) : (
-          users?.filter((user) => user.isActive && 
-          (user.email.toLowerCase().includes(debouncedSearchValue.toLowerCase()) || 
-          user.name.toLowerCase().includes(debouncedSearchValue.toLowerCase())))
-          .map((user) => (
-            <ComponentTableRow key={user.id} user={user} reRender={handleReRender}/>
-          ))
+            currentUsers.map((user) => (
+              <ComponentTableRow key={user.id} user={user} reRender={handleReRender}/>
+            ))
         )}
       </div>
       <div className="absolute w-[333px] h-[40px] left-[599px] top-[862px]">
-        <ComponentPagination pages={3} currentPage={handleCurrentPage}></ComponentPagination>
+        <ComponentPagination pages={groupedUsers.length} currentPage={handleCurrentPage}></ComponentPagination>
       </div>
     </>
   )
