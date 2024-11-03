@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
-import { User } from "@/types";
 import dynamic from "next/dynamic"
 
 const ComponentSidebar = dynamic (() => import('@/app/components/Sidebar'))
@@ -10,15 +9,12 @@ const ComponentUserForm = dynamic(() => import('@/app/components/UserForm'))
 
 export default function HomePage() {
   const router = useRouter();
-  const [storedSession, setStoredSession] = useState<User | null>(null);
   const [activeItem, setActiveItem] = useState<string>('Inicio');
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const sessionData = sessionStorage.getItem("userSession");
-      if (sessionData) {
-        setStoredSession(JSON.parse(sessionData));
-      } else {
+      if (!sessionData) {
         router.push('/');
       }
     }
@@ -27,6 +23,10 @@ export default function HomePage() {
   const handleItemClick = (item: string) => {
     setActiveItem(item);
   };
+
+  const handleReRender = () => {
+    setActiveItem('Inicio');
+  }
 
   return (
     <>
@@ -47,7 +47,7 @@ export default function HomePage() {
       ) : (
         <>
           <ComponentUserTable></ComponentUserTable>
-          <ComponentUserForm></ComponentUserForm>
+          <ComponentUserForm reRender={handleReRender}></ComponentUserForm>
         </>
       ) }
     </>

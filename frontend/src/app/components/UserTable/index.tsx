@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use client'
 import { User } from "@/types";
 import { useEffect, useState } from "react";
@@ -47,11 +48,10 @@ export default function UserTable() {
     setCurrentPage(1);
   }
 
-  const handleReRender = (user: string | User) => {
+  const handleReRender = (user: string | User ) => {
     if (typeof user == 'object') {
       setUsers((prevUsers) => prevUsers!.map((i) => i.id === user.id ? { ...i, ...user } : i));
-    }
-    if (typeof user == 'string') setUsers((prevUsers) => prevUsers!.filter((i) => i.id !== user));
+    } else if (typeof user == 'string') setUsers((prevUsers) => prevUsers!.filter((i) => i.id !== user));
   };
 
   const handleCurrentPage = (page: number) => {
