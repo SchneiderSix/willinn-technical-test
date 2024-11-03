@@ -6,6 +6,7 @@ import dynamic from "next/dynamic"
 
 const ComponentSidebar = dynamic (() => import('@/app/components/Sidebar'))
 const ComponentUserTable = dynamic(() => import('@/app/components/UserTable'))
+const ComponentUserForm = dynamic(() => import('@/app/components/UserForm'))
 
 export default function HomePage() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function HomePage() {
       ) : (
         <>
           <ComponentUserTable></ComponentUserTable>
+          <ComponentUserForm></ComponentUserForm>
         </>
       ) }
     </>
