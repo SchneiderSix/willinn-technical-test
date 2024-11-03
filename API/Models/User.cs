@@ -22,6 +22,6 @@ namespace API.Models
         ErrorMessage = "{0} must contain at least one special character, one number, one upper case and one lower case.")]
         [StringLength(100, ErrorMessage = "{0} value cannot exceed {1} characters.")]
         public string Password { get; set; } = null!;
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
     }
 }

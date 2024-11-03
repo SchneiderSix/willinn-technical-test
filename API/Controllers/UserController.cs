@@ -62,9 +62,6 @@ namespace API.Controllers
 
             newUser.ID = Guid.NewGuid().ToString();
 
-            newUser.IsActive = true;
-
-
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
